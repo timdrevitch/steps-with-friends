@@ -1,0 +1,17 @@
+#tab-two-page {
+  .container {
+    flex: 1;
+    align-items: "center";
+    justify-content: "center";
+  }
+  .title {
+    font-size: 20;
+    font-weight: "bold";
+  }
+  .separator {
+    margin-top: 30;
+    margin-bottom: 30;
+    height: 1;
+    width: "80%";
+  }
+}

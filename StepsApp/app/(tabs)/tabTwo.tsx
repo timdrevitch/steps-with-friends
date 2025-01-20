@@ -1,6 +1,8 @@
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
+// import EditScreenInfo from "@/components/EditScreenInfo";
+// import { Text, View } from "@/components/Themed";
+import { Text, View } from "../../components/Themed";
 import "./tabTwo.scss";
+import EditScreenInfo from "../../components/EditScreenInfo";
 
 type TabTwoScreenProps = {};
 

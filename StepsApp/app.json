@@ -14,20 +14,24 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.stepsapp.ios"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/walking-shoe.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.stepsapp.android"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/walking-shoe.png"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router"
+    ],
     "experiments": {
       "typedRoutes": true
     }

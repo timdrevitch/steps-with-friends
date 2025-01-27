@@ -10,7 +10,9 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [stepChange, setStepChange] = useState<number | null>(null);
+  const [distanceChange, setDistanceChange] = useState<number | null>(null);
   const previousSteps = useRef<number>(0);
+  const previousDistance = useRef<number>(0);
 
   const yesterday: Date = new Date();
   yesterday.setDate(date.getDate() - 1);
@@ -34,13 +36,20 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
     setIsRefreshing(true);
 
     setTimeout(() => {
-      const change = steps - previousSteps.current;
+      const stepCountChange = steps - previousSteps.current;
+      const distanceCountChange = distance - previousDistance.current;
 
-      if (change > 0) {
-        setStepChange(change); // Save the increase
+      if (stepCountChange > 0) {
+        setStepChange(stepCountChange); // Save the increase
         previousSteps.current = steps; // Update the previous steps value
       } else {
         setStepChange(null); // Reset if no increase
+      }
+      if (distanceCountChange > 0) {
+        setDistanceChange(distanceCountChange); // Save the increase
+        previousDistance.current = distance; // Update the previous distance value
+      } else {
+        setDistanceChange(null); // Reset if no increase
       }
 
       // Refresh date to trigger new data fetch
@@ -51,7 +60,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
     setTimeout(() => {
       setIsRefreshing(false); // Stop refreshing
     }, 1500);
-  }, [steps]);
+  }, [steps, distance]);
 
   useEffect(() => {
     // Whenever the date is updated (e.g. from pull-to-refresh)
@@ -60,13 +69,23 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   useEffect(() => {
     if (steps > previousSteps.current) {
-      const change = steps - previousSteps.current;
-      setStepChange(change);
+      const stepCountChange = steps - previousSteps.current;
+      setStepChange(stepCountChange);
       previousSteps.current = steps; // Update previousSteps
     } else if (steps === previousSteps.current) {
       setStepChange(null); // Reset stepChange if no change
     }
-  }, [steps]);
+  }, [steps]); // Only trigger when steps change
+
+  useEffect(() => {
+    if (distance > previousDistance.current) {
+      const distanceCountChange = distance - previousDistance.current;
+      setDistanceChange(distanceCountChange);
+      previousDistance.current = distance; // Update previousDistance
+    } else if (distance === previousDistance.current) {
+      setDistanceChange(null); // Reset distanceChange if no change
+    }
+  }, [distance]);
 
   return (
     <ScrollView
@@ -88,10 +107,10 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             value={steps.toString()}
             change={stepChange ? stepChange.toString() : null}
           />
-          {/* {stepChange && <Text style={styles.changeText}>+{stepChange}</Text>} */}
           <Value
             label="Distance:"
             value={`${(distance / 1000).toFixed(2)} km`}
+            change={distanceChange ? (distanceChange / 1000).toFixed(2) : null}
           />
           <Value label="Floors Climbed:" value={flights.toString()} />
           <Value label="Active Calories Burned:" value={calories.toString()} />
